@@ -12,14 +12,14 @@ public class FriendyBackServerRunner {
 
         try(ServerSocket serverSocket = new ServerSocket(8080);
             Socket socket = serverSocket.accept();
-            DataInputStream rqStream = new DataInputStream(socket.getInputStream());
             DataOutputStream rsStream = new DataOutputStream(socket.getOutputStream());
+            DataInputStream rqStream = new DataInputStream(socket.getInputStream());
             Scanner scanner = new Scanner(System.in);
         ){
             String request = rqStream.readUTF();
 
-            while (scanner.hasNextLine()){
-                System.out.println(request);
+            while (!"stop".equals(request)){
+                System.out.println("client write: " + request);
                 String response = scanner.nextLine();
 
                 rsStream.writeUTF(response);

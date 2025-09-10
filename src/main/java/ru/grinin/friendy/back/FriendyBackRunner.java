@@ -10,8 +10,8 @@ public class FriendyBackRunner {
     public static void main(String[] args) throws IOException {
 
         try(Socket socket = new Socket("localhost", 8080);
-            DataInputStream rsStream = new DataInputStream(socket.getInputStream());
             DataOutputStream rqStream = new DataOutputStream(socket.getOutputStream());
+            DataInputStream rsStream = new DataInputStream(socket.getInputStream());
             Scanner scanner = new Scanner(System.in);
             ){
 
