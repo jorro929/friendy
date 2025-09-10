@@ -52,7 +52,7 @@ public class ProfileDao implements AbstractProfileDao {
         UUID id;
         do{
             id = UUID.randomUUID();
-        }while (!storage.containsKey(id));
+        }while (storage.containsKey(id));
         return id;
     }
 
