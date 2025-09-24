@@ -1,6 +1,7 @@
 package ru.grinin.friendy.back.controller;
 
 import lombok.RequiredArgsConstructor;
+import ru.grinin.friendy.back.controller.api.Controller;
 import ru.grinin.friendy.back.model.Profile;
 import ru.grinin.friendy.back.service.imp.ProfileService;
 
@@ -8,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class ProfileController {
+public class ProfileController implements Controller{
 
     private final ProfileService service;
 
