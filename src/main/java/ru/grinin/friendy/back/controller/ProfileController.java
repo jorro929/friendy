@@ -20,7 +20,7 @@ import java.util.UUID;
 public class ProfileController extends HttpServlet implements Controller {
 
 
-    private final ProfileService service = ProfileService.getService();
+    private final ProfileService service = ProfileService.getINSTANCE();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

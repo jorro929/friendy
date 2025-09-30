@@ -3,9 +3,10 @@ package ru.grinin.friendy.back.service.imp;
 
 import lombok.Getter;
 
+
 public class HelloService {
     @Getter
-    private static final HelloService service = new HelloService();;
+    private static final HelloService INSTANCE = new HelloService();;
 
     private HelloService(){
     }

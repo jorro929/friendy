@@ -9,17 +9,22 @@ import java.util.UUID;
 @Getter
 @ToString
 @EqualsAndHashCode(of = {"email", "name", "surname"})
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class Profile implements Identifiable<UUID> {
 
     private UUID id;
 
-    private String email;
-
+    @NonNull
     private String name;
 
+    @NonNull
     private String surname;
 
+    @NonNull
+    private String email;
+
+    @NonNull
     private String about;
 
 }
