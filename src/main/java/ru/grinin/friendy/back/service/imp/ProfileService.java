@@ -1,16 +1,31 @@
 package ru.grinin.friendy.back.service.imp;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import ru.grinin.friendy.back.dao.imp.ProfileDao;
 import ru.grinin.friendy.back.model.Profile;
 import ru.grinin.friendy.back.service.api.AbstractProfileService;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 public class ProfileService implements AbstractProfileService {
+
+    private static ProfileService service;
+
+    private ProfileService(ProfileDao dao){
+        this.dao = dao;
+    }
+
+    public static ProfileService getService(){
+        if(service == null){
+            service = new ProfileService(new ProfileDao());
+        }
+        return service;
+    }
 
     private final ProfileDao dao;
 
@@ -39,4 +54,5 @@ public class ProfileService implements AbstractProfileService {
     public List<Profile> findAll() {
         return dao.findAll();
     }
+
 }
