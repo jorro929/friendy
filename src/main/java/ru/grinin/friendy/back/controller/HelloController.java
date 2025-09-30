@@ -3,6 +3,7 @@ package ru.grinin.friendy.back.controller;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.annotation.WebInitParam;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,35 +11,54 @@ import jakarta.servlet.http.HttpServletResponse;
 import ru.grinin.friendy.back.controller.api.Controller;
 import ru.grinin.friendy.back.service.imp.HelloService;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Iterator;
 import java.util.UUID;
 
-@WebServlet("/hello")
+@WebServlet(value = "/hello")
 public class HelloController extends HttpServlet {
 
-    private final HelloService service = HelloService.getService();
-    private  String servletName;
+    private final HelloService service = HelloService.getINSTANCE();
+    private String servletName;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         servletName = config.getServletName();
+        System.out.println(config.getServletContext().getContextPath());
         System.out.println("Init servlet " + servletName);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String response = "get";
+        String response;
 
         if (req.getParameter("hello") != null) {
             response = service.findById((req.getParameter("hello")));
         } else {
             response = service.findAll();
         }
-        resp.setContentType("text/plain");
-        resp.getWriter().write(response);
+        resp.setContentType("text/html");
+        resp.setCharacterEncoding("UTF-8");
+        try(PrintWriter writer = resp.getWriter()){
+            writer.write("<h2>");
+            writer.write("<p>");
+            writer.write("Answer: " + response);
+            writer.write("</p>");
+            writer.write("<p>");
+            writer.write("User-Agent: " + req.getHeader("User-Agent"));
+            writer.write("</p>");
+            writer.write("<br>");
+            writer.write("<p>");
+            writer.write("Request-URI: " + req.getRequestURI());
+            writer.write("</p>");
+            writer.write("<br>");
+            writer.write("<p>");
+            writer.write("Request-URI: <a href=" + req.getRequestURL() + ">ссылка</a>");
+            writer.write("</p>");
+            writer.write("</h2>");
+
+        }
+
     }
 
     @Override
@@ -79,4 +99,6 @@ public class HelloController extends HttpServlet {
     public void destroy() {
         System.out.println("Destroy servlet " + servletName);
     }
+
+
 }
