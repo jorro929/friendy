@@ -31,6 +31,7 @@ public class HelloController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String response;
+        System.out.println(req.getHeader("user-agent"));
 
         if (req.getParameter("hello") != null) {
             response = service.findById((req.getParameter("hello")));

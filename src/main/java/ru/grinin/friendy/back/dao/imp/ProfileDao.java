@@ -3,6 +3,7 @@ package ru.grinin.friendy.back.dao.imp;
 import lombok.Getter;
 import ru.grinin.friendy.back.dao.api.AbstractProfileDao;
 import ru.grinin.friendy.back.model.Profile;
+import ru.grinin.friendy.back.model.supportclass.Gender;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,11 +21,14 @@ public class ProfileDao implements AbstractProfileDao {
         this.storage = new ConcurrentHashMap<>();
 
         storage.put(UUID.fromString("70e4e64a-fc05-441a-88f9-00363e46a3be"),
-                new Profile("Vasiliy", "Grinin", "grinin@mail.com", "I am Java developer"));
+                new Profile("Vasiliy", "Grinin", "grinin@mail.com", "I am Java developer", Gender.MALE));
         storage.get(UUID.fromString("70e4e64a-fc05-441a-88f9-00363e46a3be")).setId(UUID.fromString("70e4e64a-fc05-441a-88f9-00363e46a3be"));
         storage.put(UUID.fromString("d093c0bd-5b86-4799-a0a5-54120572c3b4"),
-                new Profile("Filip", "Tityshin", "jopa@example.ru", "I am cool man"));
+                new Profile("Filip", "Tityshin", "jopa@example.ru", "I am cool man", Gender.MALE));
         storage.get(UUID.fromString("d093c0bd-5b86-4799-a0a5-54120572c3b4")).setId(UUID.fromString("d093c0bd-5b86-4799-a0a5-54120572c3b4"));
+        storage.put(UUID.fromString("8ae88986-264c-4db4-ac6b-607ac6406f1e"),
+                new Profile("Larisa", "Dvorina", "kyricha@bk.ru", "I am QA", Gender.FEMALE));
+        storage.get(UUID.fromString("8ae88986-264c-4db4-ac6b-607ac6406f1e")).setId(UUID.fromString("8ae88986-264c-4db4-ac6b-607ac6406f1e"));
     }
 
     public Profile save(Profile profile){

@@ -1,6 +1,7 @@
 package ru.grinin.friendy.back.model;
 
 import lombok.*;
+import ru.grinin.friendy.back.model.supportclass.Gender;
 import ru.grinin.friendy.back.model.supportclass.Identifiable;
 
 import java.util.UUID;
@@ -26,5 +27,8 @@ public class Profile implements Identifiable<UUID> {
 
     @NonNull
     private String about;
+
+    @NonNull
+    private Gender gender;
 
 }
