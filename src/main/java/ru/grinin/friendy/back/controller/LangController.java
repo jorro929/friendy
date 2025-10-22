@@ -16,9 +16,6 @@ public class LangController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String lang = req.getParameter("lang");
-        System.out.println("Cookie header: " + req.getHeader("Cookie"));
-        System.out.println("--------------------------------");
-
         Cookie cookie = new Cookie("lang", "en");
 
         if("ru".equals(lang)){

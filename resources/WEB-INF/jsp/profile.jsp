@@ -7,6 +7,7 @@
 <body>
 
 <%@ include file="header.jsp" %>
+<%@ include file="style.html" %>
 
 <div>
     <form method="post" action="/profile">
@@ -17,9 +18,14 @@
 
         <table>
             <td><input type="text" name="id" hidden value="${requestScope.profile.id}"></td>
+            <td><input type="text" name="status" hidden value="${requestScope.profile.status}"></td>
+
             <tr>
                 <td><h3>Email</h3></td>
-                <td><input type="email" name="email" value="${requestScope.profile.email}"></td>
+                <td>
+                    <input type="email" name="email" hidden value="${requestScope.profile.email}">
+                    <a href="/email?id=${requestScope.profile.id}">${requestScope.profile.email}</a>
+                </td>
             </tr>
 
             <tr>
@@ -33,6 +39,18 @@
             </tr>
 
             <tr>
+                <td><h3>${requestScope.wordBundle.getWord("birth-date")}</h3></td>
+                <td><input type="date" name="date-birth"  value="${requestScope.profile.birthDate}"></td>
+            </tr>
+
+            <c:if test="${requestScope.profile.id != null}">
+                <tr>
+                    <td><h3>${requestScope.wordBundle.getWord("age")}</h3></td>
+                    <td><h3>${requestScope.profile.age}</h3></td>
+                </tr>
+            </c:if>
+
+            <tr>
                 <td><h3>${requestScope.wordBundle.getWord("about")}</h3></td>
                 <td><input type="text" name="about" value="${requestScope.profile.about}"></td>
             </tr>
@@ -40,9 +58,11 @@
                 <td><h3>${requestScope.wordBundle.getWord("gender")}</h3></td>
                 <td>
                     <select name="gender">
-                        <option value="${requestScope.profile.gender}" selected hidden>${requestScope.profile.gender}</option>
+<!--                        ${requestScope.profile.gender}-->
+<!--                        -->
+                        <option value="${requestScope.profile.gender}" selected hidden>${requestScope.wordBundle.getWord(requestScope.profile.gender)}</option>
                         <c:forEach var="gender" items="${applicationScope.genders}">
-                            <option value="${gender}">${gender}</option>
+                            <option value="${gender}">${requestScope.wordBundle.getWord(gender)}</option>
                         </c:forEach>
                     </select>
                 </td>
@@ -67,4 +87,3 @@
 <%@ include file="footer.jsp" %>
 
 </body>
-</html>

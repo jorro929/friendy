@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.grinin.friendy.back.model.supportclass.Gender;
+import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -38,6 +39,9 @@ public class HiddenHttpMethodFilter implements Filter {
         ServletContext context = filterConfig.getServletContext();
         if(context.getAttribute("genders") == null){
             context.setAttribute("genders", Gender.values());
+        }
+        if(context.getAttribute("status") == null){
+            context.setAttribute("status", ProfileStatus.values());
         }
     }
 

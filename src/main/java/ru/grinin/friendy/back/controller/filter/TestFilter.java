@@ -12,8 +12,7 @@ public class TestFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("init TEST FILTER");
-        System.out.println(filterConfig.getInitParameter("firsrt"));
+
     }
 
     @Override

@@ -4,10 +4,13 @@ import lombok.Getter;
 import ru.grinin.friendy.back.dao.api.AbstractProfileDao;
 import ru.grinin.friendy.back.model.Profile;
 import ru.grinin.friendy.back.model.supportclass.Gender;
+import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 
 public class ProfileDao implements AbstractProfileDao {
@@ -21,21 +24,21 @@ public class ProfileDao implements AbstractProfileDao {
         this.storage = new ConcurrentHashMap<>();
 
         storage.put(UUID.fromString("70e4e64a-fc05-441a-88f9-00363e46a3be"),
-                new Profile("Vasiliy", "Grinin", "grinin@mail.com", "I am Java developer", Gender.MALE));
+                new Profile("Vasiliy", "Grinin", "grinin@mail.com", "12344321", LocalDate.parse("2002-06-09"), "I am Java developer", Gender.MALE, ProfileStatus.ACTIVE));
         storage.get(UUID.fromString("70e4e64a-fc05-441a-88f9-00363e46a3be")).setId(UUID.fromString("70e4e64a-fc05-441a-88f9-00363e46a3be"));
         storage.put(UUID.fromString("d093c0bd-5b86-4799-a0a5-54120572c3b4"),
-                new Profile("Filip", "Tityshin", "jopa@example.ru", "I am cool man", Gender.MALE));
+                new Profile("Filip", "Tityshin", "jopa@example.ru", "12345678", LocalDate.parse("1998-03-23"), "I am cool man", Gender.MALE, ProfileStatus.BLOCKED));
         storage.get(UUID.fromString("d093c0bd-5b86-4799-a0a5-54120572c3b4")).setId(UUID.fromString("d093c0bd-5b86-4799-a0a5-54120572c3b4"));
         storage.put(UUID.fromString("8ae88986-264c-4db4-ac6b-607ac6406f1e"),
-                new Profile("Larisa", "Dvorina", "kyricha@bk.ru", "I am QA", Gender.FEMALE));
+                new Profile("Larisa", "Dvorina", "kyricha@bk.ru", "87654321", LocalDate.parse("1992-08-31"), "I am QA", Gender.FEMALE, ProfileStatus.ACTIVE));
         storage.get(UUID.fromString("8ae88986-264c-4db4-ac6b-607ac6406f1e")).setId(UUID.fromString("8ae88986-264c-4db4-ac6b-607ac6406f1e"));
     }
 
-    public Profile save(Profile profile){
+    public UUID save(Profile profile){
         UUID id = generateId();
         profile.setId(id);
         storage.put(id, profile);
-        return profile;
+        return profile.getId();
     }
 
     public Optional<Profile> findById(UUID id){
@@ -69,6 +72,8 @@ public class ProfileDao implements AbstractProfileDao {
     }
 
 
-
-
+    @Override
+    public Set<String> findAlLEmails() {
+        return storage.values().stream().map(Profile::getEmail).collect(Collectors.toSet());
+    }
 }

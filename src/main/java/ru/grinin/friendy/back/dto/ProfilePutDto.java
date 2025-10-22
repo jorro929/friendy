@@ -1,8 +1,7 @@
-package ru.grinin.friendy.back.model;
+package ru.grinin.friendy.back.dto;
 
 import lombok.*;
 import ru.grinin.friendy.back.model.supportclass.Gender;
-import ru.grinin.friendy.back.model.supportclass.Identifiable;
 import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 
 import java.time.LocalDate;
@@ -11,10 +10,10 @@ import java.util.UUID;
 @Setter
 @Getter
 @ToString
-@EqualsAndHashCode(of = {"email", "name", "surname"})
+@EqualsAndHashCode
 @RequiredArgsConstructor
 @NoArgsConstructor
-public class Profile implements Identifiable<UUID> {
+public class ProfilePutDto {
 
     private UUID id;
 
@@ -24,11 +23,10 @@ public class Profile implements Identifiable<UUID> {
     @NonNull
     private String surname;
 
-    @NonNull
-    private String email;
+    private String password;
 
     @NonNull
-    private String password;
+    private String email;
 
     @NonNull
     private LocalDate birthDate;
@@ -41,5 +39,6 @@ public class Profile implements Identifiable<UUID> {
 
     @NonNull
     private ProfileStatus status;
+
 
 }
