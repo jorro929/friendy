@@ -23,8 +23,7 @@ public class RequestToProfilePutMapper implements Mapper<HttpServletRequest, Pro
                 req.getParameter("email"),
                 LocalDate.parse(req.getParameter("date-birth")),
                 req.getParameter("about"),
-                Gender.valueOf(req.getParameter("gender")),
-                ProfileStatus.valueOf(req.getParameter("status")));
+                Gender.valueOf(req.getParameter("gender")));
         dto.setId(UUID.fromString(req.getParameter("id")));
         return dto;
     }

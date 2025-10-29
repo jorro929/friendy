@@ -8,8 +8,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.controller.api.Controller;
 import ru.grinin.friendy.back.service.imp.HelloService;
+import ru.grinin.friendy.back.util.AbonentIdGetter;
 
 import java.io.*;
 import java.util.Iterator;
@@ -18,11 +21,14 @@ import java.util.UUID;
 @WebServlet(value = "/hello")
 public class HelloController extends HttpServlet {
 
+    private static final Logger log = LoggerFactory.getLogger(HelloController.class);
+
     private final HelloService service = HelloService.getINSTANCE();
     private String servletName;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
+        log.trace("Hello controller init");
         servletName = config.getServletName();
         System.out.println(config.getServletContext().getContextPath());
         System.out.println("Init servlet " + servletName);
@@ -30,6 +36,7 @@ public class HelloController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.trace("Abonent: {} request GET hello", AbonentIdGetter.getAbonentId(req).getValue());
         String response;
         System.out.println(req.getHeader("user-agent"));
 
@@ -64,6 +71,7 @@ public class HelloController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.trace("Abonent: {} request POST hello", AbonentIdGetter.getAbonentId(req).getValue());
         resp.setContentType("text/plain");
         resp.getWriter().write(service.save(getBody(req)));
     }
@@ -86,19 +94,21 @@ public class HelloController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.trace("Abonent: {} request PUT hello", AbonentIdGetter.getAbonentId(req).getValue());
         resp.setContentType("text/plain");
         resp.getWriter().write(service.update(getBody(req)));
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.trace("Abonent: {} request DELETE hello", AbonentIdGetter.getAbonentId(req).getValue());
         resp.setContentType("text/plain");
         resp.getWriter().write(service.delete(req.getParameter("hello")));
     }
 
     @Override
     public void destroy() {
-        System.out.println("Destroy servlet " + servletName);
+        log.trace("Hello controller destroy");
     }
 
 

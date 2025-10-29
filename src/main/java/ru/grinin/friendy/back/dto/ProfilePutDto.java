@@ -37,8 +37,6 @@ public class ProfilePutDto {
     @NonNull
     private Gender gender;
 
-    @NonNull
-    private ProfileStatus status;
 
 
 }

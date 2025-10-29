@@ -22,7 +22,6 @@ public class ProfileGetToPutMapper implements Mapper <ProfileGetDto, ProfilePutD
                 dto.getEmail(),
                 dto.getBirthDate(),
                 dto.getAbout(),
-                dto.getGender(),
-                dto.getStatus());
+                dto.getGender());
     }
 }

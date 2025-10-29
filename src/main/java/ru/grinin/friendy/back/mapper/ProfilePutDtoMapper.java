@@ -21,7 +21,7 @@ public class ProfilePutDtoMapper implements Mapper <ProfilePutDto, Profile> {
                 dto.getBirthDate(),
                 dto.getAbout(),
                 dto.getGender(),
-                dto.getStatus());
+                ProfileStatus.ACTIVE);
          if(dto.getId() != null) profile.setId(dto.getId());
          return profile;
     }

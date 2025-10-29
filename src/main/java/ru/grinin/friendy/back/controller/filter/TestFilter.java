@@ -10,16 +10,11 @@ import java.io.IOException;
 initParams = @WebInitParam(name = "firsrt", value = "value", description = "sdgffdsg"))
 public class TestFilter implements Filter {
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         System.out.println("do something before servlet");
 
-        System.out.println(servletRequest.getProtocolRequestId());;
 
         filterChain.doFilter(servletRequest, servletResponse);
 

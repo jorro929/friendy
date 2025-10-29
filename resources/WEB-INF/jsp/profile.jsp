@@ -18,7 +18,6 @@
 
         <table>
             <td><input type="text" name="id" hidden value="${requestScope.profile.id}"></td>
-            <td><input type="text" name="status" hidden value="${requestScope.profile.status}"></td>
 
             <tr>
                 <td><h3>Email</h3></td>

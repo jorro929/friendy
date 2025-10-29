@@ -1,6 +1,8 @@
 package ru.grinin.friendy.back.service.imp;
 
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.dao.imp.ProfileDao;
 import ru.grinin.friendy.back.dto.ProfileGetDto;
 import ru.grinin.friendy.back.dto.ProfilePutDto;
@@ -17,6 +19,8 @@ import java.util.*;
 
 
 public class ProfileService implements AbstractProfileService {
+
+    private static final Logger log = LoggerFactory.getLogger(ProfileService.class);
 
     @Getter
     private static final ProfileService INSTANCE = new ProfileService(ProfileDao.getINSTANCE());
@@ -35,12 +39,14 @@ public class ProfileService implements AbstractProfileService {
     @Override
     public Optional<ProfileGetDto> findById(UUID id) {
         if (id == null) return Optional.empty();
+        log.debug("id is not null");
         return dao.findById(id).map(getDtoMapper::mapTo);
     }
 
     @Override
     public boolean delete(UUID id) {
         if (id == null) return false;
+        log.debug("id is not null");
         return dao.delete(id);
     }
 
@@ -48,13 +54,17 @@ public class ProfileService implements AbstractProfileService {
     public void update(ProfilePutDto profileDto) throws ProfileNotFoundException, EmailCollisionException {
 
         Profile oldProfile = dao.findById(profileDto.getId()).orElseThrow(ProfileNotFoundException::new);
+        log.debug("Profile exists");
         checkProfile(oldProfile.getEmail(), profileDto.getEmail());
+        log.debug("{} is not busy", profileDto.getEmail());
 
         if(profileDto.getPassword() == null || profileDto.getPassword().isBlank()){
+            log.debug("Dto doesn't change password");
             profileDto.setPassword(oldProfile.getPassword());
         }
-
-        dao.update(profileDto.getId(), putDtoMapper.mapTo(profileDto));
+        Profile newProfile = putDtoMapper.mapTo(profileDto);
+        newProfile.setStatus(oldProfile.getStatus());
+        dao.update(profileDto.getId(), newProfile);
 
     }
 
@@ -62,6 +72,7 @@ public class ProfileService implements AbstractProfileService {
     public void updateStatus(ProfileStatusDto dto) throws ProfileNotFoundException {
 
         Profile profile = dao.findById(dto.id()).orElseThrow(ProfileNotFoundException::new);
+        log.debug("Profile exists");
         profile.setStatus(dto.status());
         dao.update(profile.getId(), profile);
     }

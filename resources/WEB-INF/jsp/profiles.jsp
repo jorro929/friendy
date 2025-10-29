@@ -29,12 +29,6 @@
                 <td><h3>${profile.age}</h3></td>
                 <td><a href="/profile?id=${profile.id}">${requestScope.wordBundle.getWord("profile")}</a></td>
                 <td>
-<!--                    <select name="status">-->
-<!--                        <option value="${requestScope.profile.status}" selected hidden>${requestScope.wordBundle.getWord(profile.status)}</option>-->
-<!--                        <c:forEach var="status" items="${applicationScope.status}">-->
-<!--                            <option value="${status}">${requestScope.wordBundle.getWord(status)}</option>-->
-<!--                        </c:forEach>-->
-<!--                    </select>-->
                     <form action="/profile" method="post">
                         <input type="hidden" name="_method" value="put"/>
                         <input type="hidden" name="id" value="${profile.id}">
