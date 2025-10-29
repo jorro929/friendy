@@ -1,16 +1,17 @@
 package ru.grinin.friendy.back.mapper;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ru.grinin.friendy.back.dto.ProfilePutDto;
 import ru.grinin.friendy.back.model.Profile;
 import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProfilePutDtoMapper implements Mapper <ProfilePutDto, Profile> {
     @Getter
     private static final ProfilePutDtoMapper INSTANCE = new ProfilePutDtoMapper();;
 
-    private ProfilePutDtoMapper(){
-    }
     @Override
     public Profile mapTo(ProfilePutDto dto) {
          Profile profile = new Profile(

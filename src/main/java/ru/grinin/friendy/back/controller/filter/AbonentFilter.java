@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.controller.EmailController;
@@ -15,10 +16,11 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
+
 @WebFilter("/*")
 public class AbonentFilter implements Filter {
 
-    private static final Logger log = LoggerFactory.getLogger(AbonentFilter.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

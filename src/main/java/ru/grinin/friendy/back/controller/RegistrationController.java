@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.dto.ProfileRegistrationDto;
@@ -23,10 +24,9 @@ import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
 import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
 @WebServlet("/registration")
+@Slf4j
 public class RegistrationController extends HttpServlet {
 
-
-    private static final Logger log = LoggerFactory.getLogger(RegistrationController.class);
 
     private final AbstractRegistrationService registrationService = RegistrationService.getINSTANCE();
 

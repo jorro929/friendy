@@ -1,20 +1,20 @@
 package ru.grinin.friendy.back.service.imp;
 
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+@Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HelloService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProfileService.class);
 
     @Getter
     private static final HelloService INSTANCE = new HelloService();;
-
-    private HelloService(){
-    }
 
     public String save(String hello){
         log.trace("hello save");

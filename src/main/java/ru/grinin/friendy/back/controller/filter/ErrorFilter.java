@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.annotation.WebInitParam;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,10 +15,11 @@ import java.util.Arrays;
 import static jakarta.servlet.RequestDispatcher.ERROR_EXCEPTION;
 import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
 
+@Slf4j
+
 @WebFilter(value = "/*", dispatcherTypes = DispatcherType.ERROR)
 public class ErrorFilter implements Filter {
 
-    private static final Logger log = LoggerFactory.getLogger(ErrorFilter.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

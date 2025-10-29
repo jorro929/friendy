@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.model.supportclass.Gender;
@@ -15,12 +16,12 @@ import java.util.Locale;
 
 import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
 
+@Slf4j
+
 @WebFilter("/*")
 public class HiddenHttpMethodFilter implements Filter {
 
     public static final String METHOD_PARAM = "_method";
-
-    private static final Logger log = LoggerFactory.getLogger(HiddenHttpMethodFilter.class);
 
 
     @Override

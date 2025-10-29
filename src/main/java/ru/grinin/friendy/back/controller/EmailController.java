@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.controller.filter.ErrorFilter;
@@ -29,9 +30,9 @@ import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
 
 @WebServlet("/email")
+@Slf4j
 public class EmailController extends HttpServlet {
 
-    private static final Logger log = LoggerFactory.getLogger(EmailController.class);
 
     private final AbstractProfileService profileService = ProfileService.getINSTANCE();
 

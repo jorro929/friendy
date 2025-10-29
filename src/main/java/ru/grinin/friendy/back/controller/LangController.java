@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.util.AbonentIdGetter;
@@ -14,9 +15,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 @WebServlet("/lang")
+@Slf4j
 public class LangController extends HttpServlet {
-
-    private static final Logger log = LoggerFactory.getLogger(LangController.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -1,9 +1,10 @@
+.todo.txt
+.ROOT.war
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-.todo.txt
-.ROOT
+
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.dto.ProfileGetDto;
@@ -24,10 +25,10 @@ import java.util.UUID;
 import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
+@Slf4j
 @WebServlet("/profile")
 public class ProfileController extends HttpServlet {
 
-    private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
 
     private final ProfileService service = ProfileService.getINSTANCE();
 
@@ -35,6 +36,10 @@ public class ProfileController extends HttpServlet {
 
     private final RequestToProfileStatusDtoMapper statusDtoMapper = RequestToProfileStatusDtoMapper.getINSTANCE();
 
+    @Override
+    public void init() throws ServletException {
+        log.debug("init profile service");
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

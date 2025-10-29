@@ -1,6 +1,9 @@
 package ru.grinin.friendy.back.service.imp;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.dao.imp.ProfileDao;
@@ -18,19 +21,14 @@ import ru.grinin.friendy.back.service.api.AbstractProfileService;
 import java.util.*;
 
 
+@Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProfileService implements AbstractProfileService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProfileService.class);
-
     @Getter
-    private static final ProfileService INSTANCE = new ProfileService(ProfileDao.getINSTANCE());
+    private static final ProfileService INSTANCE = new ProfileService();
 
-    private ProfileService(ProfileDao dao) {
-        this.dao = dao;
-    }
-
-
-    private final ProfileDao dao;
+    private final ProfileDao dao = ProfileDao.getINSTANCE();
 
     private final ProfileGetDtoMapper getDtoMapper = ProfileGetDtoMapper.getINSTANCE();
     private final ProfilePutDtoMapper putDtoMapper = ProfilePutDtoMapper.getINSTANCE();

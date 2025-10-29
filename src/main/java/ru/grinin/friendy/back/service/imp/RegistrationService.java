@@ -1,6 +1,9 @@
 package ru.grinin.friendy.back.service.imp;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.controller.RegistrationController;
@@ -17,20 +20,17 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RegistrationService implements AbstractRegistrationService {
 
-    private static final Logger log = LoggerFactory.getLogger(RegistrationService.class);
+
 
     @Getter
-    private static final RegistrationService INSTANCE = new RegistrationService(ProfileDao.getINSTANCE());
-
-    private RegistrationService(ProfileDao dao) {
-        this.dao = dao;
-    }
+    private static final RegistrationService INSTANCE = new RegistrationService();
 
 
-
-    private final ProfileDao dao;
+    private final ProfileDao dao = ProfileDao.getINSTANCE();
 
     private final ProfileRegistrationMapper registrationMapper = ProfileRegistrationMapper.getINSTANCE();
     @Override

@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.controller.api.Controller;
@@ -19,9 +20,8 @@ import java.util.Iterator;
 import java.util.UUID;
 
 @WebServlet(value = "/hello")
+@Slf4j
 public class HelloController extends HttpServlet {
-
-    private static final Logger log = LoggerFactory.getLogger(HelloController.class);
 
     private final HelloService service = HelloService.getINSTANCE();
     private String servletName;
