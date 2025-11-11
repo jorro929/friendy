@@ -1,5 +1,3 @@
-.todo.txt
-.ROOT.war
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -14,6 +12,8 @@ target/
 *.iws
 *.iml
 *.ipr
+.todo.txt
+.ROOT.war
 
 ### Eclipse ###
 .apt_generated

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface AbstractProfileService {
+public interface ProfileService {
 
     Optional<ProfileGetDto> findById(UUID id);
 

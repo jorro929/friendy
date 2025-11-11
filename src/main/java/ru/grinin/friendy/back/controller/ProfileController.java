@@ -1,13 +1,12 @@
 package ru.grinin.friendy.back.controller;
 
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.dto.ProfileGetDto;
 import ru.grinin.friendy.back.dto.ProfilePutDto;
 import ru.grinin.friendy.back.dto.ProfileStatusDto;
@@ -15,7 +14,8 @@ import ru.grinin.friendy.back.exception.EmailCollisionException;
 import ru.grinin.friendy.back.exception.ProfileNotFoundException;
 import ru.grinin.friendy.back.mapper.RequestToProfilePutMapper;
 import ru.grinin.friendy.back.mapper.RequestToProfileStatusDtoMapper;
-import ru.grinin.friendy.back.service.imp.ProfileService;
+import ru.grinin.friendy.back.service.api.ProfileService;
+import ru.grinin.friendy.back.service.imp.StandardProfileService;
 import ru.grinin.friendy.back.util.AbonentIdGetter;
 
 import java.io.IOException;
@@ -30,15 +30,15 @@ import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 public class ProfileController extends HttpServlet {
 
 
-    private final ProfileService service = ProfileService.getINSTANCE();
+    private final ProfileService service = StandardProfileService.getINSTANCE();
 
     private final RequestToProfilePutMapper requestMapper = RequestToProfilePutMapper.getINSTANCE();
 
     private final RequestToProfileStatusDtoMapper statusDtoMapper = RequestToProfileStatusDtoMapper.getINSTANCE();
 
     @Override
-    public void init() throws ServletException {
-        log.debug("init profile service");
+    public void init(ServletConfig config) throws ServletException {
+        log.debug("Init controller");
     }
 
     @Override
@@ -106,5 +106,7 @@ public class ProfileController extends HttpServlet {
         log.info("Abonent: {} deleted profile with id: {}", AbonentIdGetter.getAbonentId(req).getValue(), sId);
         resp.sendRedirect("/registration");
     }
+
+
 
 }

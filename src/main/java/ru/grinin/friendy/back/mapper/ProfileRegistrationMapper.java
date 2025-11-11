@@ -7,6 +7,8 @@ import ru.grinin.friendy.back.dto.ProfileRegistrationDto;
 import ru.grinin.friendy.back.model.Profile;
 import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProfileRegistrationMapper implements Mapper<ProfileRegistrationDto, Profile>{
 
@@ -19,7 +21,7 @@ public class ProfileRegistrationMapper implements Mapper<ProfileRegistrationDto,
                 dto.getSurname(),
                 dto.getEmail(),
                 dto.getPassword(),
-                dto.getBirthDate(),
+                LocalDate.parse(dto.getBirthDate()),
                 dto.getAbout(),
                 dto.getGender(),
                 ProfileStatus.ACTIVE);

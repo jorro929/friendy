@@ -4,29 +4,26 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.grinin.friendy.back.dao.imp.ProfileDao;
 import ru.grinin.friendy.back.dto.ProfileGetDto;
 import ru.grinin.friendy.back.dto.ProfilePutDto;
 import ru.grinin.friendy.back.dto.ProfileStatusDto;
 import ru.grinin.friendy.back.exception.EmailCollisionException;
-import ru.grinin.friendy.back.exception.NotFoundException;
 import ru.grinin.friendy.back.exception.ProfileNotFoundException;
 import ru.grinin.friendy.back.mapper.ProfileGetDtoMapper;
 import ru.grinin.friendy.back.mapper.ProfilePutDtoMapper;
 import ru.grinin.friendy.back.model.Profile;
-import ru.grinin.friendy.back.service.api.AbstractProfileService;
+import ru.grinin.friendy.back.service.api.ProfileService;
 
 import java.util.*;
 
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ProfileService implements AbstractProfileService {
+public class StandardProfileService implements ProfileService {
 
     @Getter
-    private static final ProfileService INSTANCE = new ProfileService();
+    private static final StandardProfileService INSTANCE = new StandardProfileService();
 
     private final ProfileDao dao = ProfileDao.getINSTANCE();
 

@@ -1,5 +1,6 @@
 package ru.grinin.friendy.back.controller;
 
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -17,6 +18,11 @@ import java.util.Arrays;
 @WebServlet("/lang")
 @Slf4j
 public class LangController extends HttpServlet {
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        log.debug("Init controller");
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

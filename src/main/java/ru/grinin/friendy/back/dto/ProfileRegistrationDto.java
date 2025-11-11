@@ -21,7 +21,7 @@ public class ProfileRegistrationDto {
 
     private String surname;
 
-    private LocalDate birthDate;
+    private String birthDate;
 
     private String about;
 

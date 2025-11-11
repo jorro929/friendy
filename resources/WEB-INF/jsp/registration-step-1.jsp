@@ -15,18 +15,28 @@
         <table>
             <tr>
                 <td><h3>Email</h3></td>
-                <td><input type="email" name="email" value="${requestScope.profile.email}"></td>
+                <td><input type="email" name="email" value="${profile.email}"></td>
             </tr>
 
             <tr>
                 <td><h3>${requestScope.wordBundle.getWord("password")}</h3></td>
-                <td><input type="text" name="password" value="${requestScope.profile.password}"></td>
+                <td><input type="text" name="password" value="${profile.password}"></td>
             </tr>
 
         </table>
 
         <button type="submit">${requestScope.wordBundle.getWord("continue")}</button>
     </form>
+    <div style="color: red">
+        <tr>
+            <td>
+                <h3>
+                    ${errors}
+                </h3>
+            </td>
+        </tr>
+
+    </div>
 </div>
 
 <%@ include file="footer.jsp" %>

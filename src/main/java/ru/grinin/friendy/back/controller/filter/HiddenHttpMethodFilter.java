@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +16,14 @@ import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 import java.io.IOException;
 import java.util.Locale;
 
+import static jakarta.servlet.DispatcherType.FORWARD;
+import static jakarta.servlet.DispatcherType.REQUEST;
 import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
+import static ru.grinin.friendy.back.util.StringUtils.isBlank;
 
 @Slf4j
 
-@WebFilter("/*")
+@WebFilter(value = "/*", dispatcherTypes = {FORWARD, REQUEST})
 public class HiddenHttpMethodFilter implements Filter {
 
     public static final String METHOD_PARAM = "_method";
@@ -30,17 +35,20 @@ public class HiddenHttpMethodFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        String paramValue = request.getParameter(METHOD_PARAM);
 
-        if ("POST".equals(request.getMethod()) && paramValue != null && !paramValue.isBlank()) {
-            String method = paramValue.toUpperCase(Locale.ENGLISH);
-            log.debug("Abonent: {} send {} request", getAbonentId(request).getValue(), method);
-            HttpServletRequest wrapper = new HttpMethodRequestWrapper(request, method);
-            filterChain.doFilter(wrapper, response);
+        if (request.getDispatcherType() == FORWARD && request instanceof HttpMethodRequestWrapper) {
+            ((HttpMethodRequestWrapper) request).setMethod("GET");
         } else {
-            log.debug("Abonent: {} send GET request", getAbonentId(request).getValue());
-            filterChain.doFilter(request, response);
+            String paramValue = request.getParameter(METHOD_PARAM);
+
+            if ("POST".equals(request.getMethod()) && !isBlank(paramValue)) {
+                String method = paramValue.toUpperCase(Locale.ENGLISH);
+                request = new HttpMethodRequestWrapper(request, method);
+            }
         }
+
+        filterChain.doFilter(request, response);
+
     }
 
     @Override
@@ -54,27 +62,17 @@ public class HiddenHttpMethodFilter implements Filter {
         }
     }
 
-
-    @Override
-    public void destroy() {
-
-    }
-
-
-
+    @Setter
+    @Getter
     private static class HttpMethodRequestWrapper extends HttpServletRequestWrapper {
 
-        private final String method;
+        private String method;
 
         public HttpMethodRequestWrapper(HttpServletRequest request, String method) {
             super(request);
             this.method = method;
         }
 
-        @Override
-        public String getMethod() {
-            return this.method;
-        }
     }
 
 }

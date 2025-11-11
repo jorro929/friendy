@@ -12,12 +12,13 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static jakarta.servlet.DispatcherType.ERROR;
 import static jakarta.servlet.RequestDispatcher.ERROR_EXCEPTION;
 import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
 
 @Slf4j
 
-@WebFilter(value = "/*", dispatcherTypes = DispatcherType.ERROR)
+@WebFilter(value = "/*", dispatcherTypes = ERROR)
 public class ErrorFilter implements Filter {
 
 

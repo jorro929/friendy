@@ -22,7 +22,8 @@ public class LangFilter implements Filter {
 
         Cookie[] cookies = req.getCookies() != null ? req.getCookies() : new Cookie[]{};
 
-        String lang = Arrays.stream(cookies).filter(cookie -> "lang".equals(cookie.getName()))
+        String lang = Arrays.stream(cookies)
+                .filter(cookie -> "lang".equals(cookie.getName()))
                 .map(Cookie::getValue)
                 .findFirst()
                 .orElse("en");
@@ -31,7 +32,6 @@ public class LangFilter implements Filter {
 
         req.setAttribute("wordBundle", wordBundle);
 
-
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(req, res);
     }
 }
