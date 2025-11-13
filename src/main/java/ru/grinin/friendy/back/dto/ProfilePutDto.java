@@ -13,6 +13,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 @RequiredArgsConstructor
 @NoArgsConstructor
+
 public class ProfilePutDto {
 
     private UUID id;
@@ -23,20 +24,15 @@ public class ProfilePutDto {
     @NonNull
     private String surname;
 
-    private String password;
 
     @NonNull
-    private String email;
-
-    @NonNull
-    private LocalDate birthDate;
+    private String birthDate;
 
     @NonNull
     private String about;
 
     @NonNull
     private Gender gender;
-
 
 
 }

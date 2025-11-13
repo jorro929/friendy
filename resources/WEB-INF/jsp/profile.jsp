@@ -57,8 +57,6 @@
                 <td><h3>${requestScope.wordBundle.getWord("gender")}</h3></td>
                 <td>
                     <select name="gender">
-<!--                        ${requestScope.profile.gender}-->
-<!--                        -->
                         <option value="${requestScope.profile.gender}" selected hidden>${requestScope.wordBundle.getWord(requestScope.profile.gender)}</option>
                         <c:forEach var="gender" items="${applicationScope.genders}">
                             <option value="${gender}">${requestScope.wordBundle.getWord(gender)}</option>
@@ -80,6 +78,16 @@
         </c:if>
     </form>
 
+    <div style="color: red">
+        <tr>
+            <td>
+                <h3>
+                    ${errors}
+                </h3>
+            </td>
+        </tr>
+
+    </div>
 
 </div>
 

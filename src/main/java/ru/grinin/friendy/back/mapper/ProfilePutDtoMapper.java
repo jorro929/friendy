@@ -7,6 +7,8 @@ import ru.grinin.friendy.back.dto.ProfilePutDto;
 import ru.grinin.friendy.back.model.Profile;
 import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProfilePutDtoMapper implements Mapper <ProfilePutDto, Profile> {
     @Getter
@@ -17,9 +19,9 @@ public class ProfilePutDtoMapper implements Mapper <ProfilePutDto, Profile> {
          Profile profile = new Profile(
                 dto.getName(),
                 dto.getSurname(),
-                dto.getEmail(),
-                dto.getPassword() == null ? "" : dto.getPassword(),
-                dto.getBirthDate(),
+                "",
+                "",
+                LocalDate.parse(dto.getBirthDate()),
                 dto.getAbout(),
                 dto.getGender(),
                 ProfileStatus.ACTIVE);

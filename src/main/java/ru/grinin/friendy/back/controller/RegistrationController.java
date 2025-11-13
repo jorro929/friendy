@@ -13,14 +13,11 @@ import ru.grinin.friendy.back.exception.ValidException;
 import ru.grinin.friendy.back.mapper.RequestToProfileRegistrationMapper;
 import ru.grinin.friendy.back.service.api.RegistrationService;
 import ru.grinin.friendy.back.service.imp.StandardRegistrationService;
-import ru.grinin.friendy.back.validator.ValidatorError;
 
 import java.io.IOException;
 import java.util.UUID;
 
 import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
-import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static ru.grinin.friendy.back.util.ValidationErrorUtils.toStringList;
 
 @WebServlet("/registration")
 @Slf4j
@@ -60,24 +57,20 @@ public class RegistrationController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProfileRegistrationDto dto = registrationMapper.mapTo(req);
         req.getSession().setAttribute("profile", null);
+        req.getSession().setAttribute("errors", null);
 
         log.info("Abonent {} create new profile with email: {}", getAbonentId(req).getValue(), dto.getEmail());
         try {
             UUID id = registrationService.save(dto);
             log.debug("Abonent {} Profile with email: {}, received id = {}", getAbonentId(req).getValue(), dto.getEmail(), id);
-
             resp.sendRedirect(String.format("/profile?id=%s", id));
         } catch (EmailCollisionException e) {
             req.getSession().setAttribute("errors", e.getMessage());
-            log.info("Abonent {} selected an already busy email address", getAbonentId(req).getValue());
-
+            log.warn("Abonent {} selected an already busy email address", getAbonentId(req).getValue());
             resp.sendRedirect("/registration");
-
         }catch (ValidException e){
-            System.out.println(e.getMessage());
             req.getSession().setAttribute("errors", e.getMessage());
-            log.info("Abonent {} make not valid profile", getAbonentId(req).getValue());
-
+            log.warn("Abonent {} make not valid profile", getAbonentId(req).getValue());
             resp.sendRedirect("/registration");
         }
 

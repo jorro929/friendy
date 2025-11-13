@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.grinin.friendy.back.dto.ProfilePutDto;
+import ru.grinin.friendy.back.model.Profile;
 import ru.grinin.friendy.back.model.supportclass.Gender;
 import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 
@@ -21,8 +22,7 @@ public class RequestToProfilePutMapper implements Mapper<HttpServletRequest, Pro
     public ProfilePutDto mapTo(HttpServletRequest req) {
         ProfilePutDto dto = new ProfilePutDto(req.getParameter("name"),
                 req.getParameter("surname"),
-                req.getParameter("email"),
-                LocalDate.parse(req.getParameter("date-birth")),
+                req.getParameter("date-birth"),
                 req.getParameter("about"),
                 Gender.valueOf(req.getParameter("gender")));
         dto.setId(UUID.fromString(req.getParameter("id")));

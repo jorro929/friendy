@@ -12,6 +12,7 @@ import ru.grinin.friendy.back.dto.ProfilePutDto;
 import ru.grinin.friendy.back.dto.ProfileStatusDto;
 import ru.grinin.friendy.back.exception.EmailCollisionException;
 import ru.grinin.friendy.back.exception.ProfileNotFoundException;
+import ru.grinin.friendy.back.exception.ValidException;
 import ru.grinin.friendy.back.mapper.RequestToProfilePutMapper;
 import ru.grinin.friendy.back.mapper.RequestToProfileStatusDtoMapper;
 import ru.grinin.friendy.back.service.api.ProfileService;
@@ -24,6 +25,7 @@ import java.util.UUID;
 
 import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
 
 @Slf4j
 @WebServlet("/profile")
@@ -66,32 +68,19 @@ public class ProfileController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getParameter("status") != null) {
-            ProfileStatusDto profileDto = statusDtoMapper.mapTo(req);
-            try {
-                log.info("Abonent: {} change status in profile with id {}", AbonentIdGetter.getAbonentId(req).getValue(), profileDto.id());
-                service.updateStatus(profileDto);
-                log.info("Abonent: {} update profile {}", AbonentIdGetter.getAbonentId(req).getValue(), profileDto.id());
-                resp.sendRedirect("/profile");
-            } catch (ProfileNotFoundException e) {
-                resp.sendError(SC_NOT_FOUND);
+        req.getSession().setAttribute("errors", null);
+        try {
+            if (req.getParameter("status") != null) {
+                updateStatus(req, resp);
+            } else {
+                updateProfile(req, resp);
             }
-        } else {
-
-            ProfilePutDto profileDto = requestMapper.mapTo(req);
-            String sId = req.getParameter("id");
-            log.info("Abonent: {} change profile with id {}", AbonentIdGetter.getAbonentId(req).getValue(), profileDto.getId());
-            UUID id = UUID.fromString(sId);
-            profileDto.setId(id);
-            try {
-                service.update(profileDto);
-                log.info("Abonent: {} update profile {}", AbonentIdGetter.getAbonentId(req).getValue(), profileDto.getId());
-                resp.sendRedirect(String.format("/profile?id=%s", id));
-            } catch (ProfileNotFoundException e) {
-                resp.setStatus(SC_NOT_FOUND);
-            } catch (EmailCollisionException e) {
-                resp.setStatus(SC_BAD_REQUEST);
-            }
+        } catch (ProfileNotFoundException e) {
+            resp.setStatus(SC_NOT_FOUND);
+        } catch (ValidException e) {
+            req.getSession().setAttribute("errors", e.getMessage());
+            log.warn("Abonent {} make not valid profile", getAbonentId(req).getValue());
+            resp.sendRedirect(String.format("/profile?id=%s", req.getParameter("id")));
         }
     }
 
@@ -107,6 +96,27 @@ public class ProfileController extends HttpServlet {
         resp.sendRedirect("/registration");
     }
 
+
+    private void updateProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ProfileNotFoundException, ValidException {
+        ProfilePutDto profileDto = requestMapper.mapTo(req);
+        String sId = req.getParameter("id");
+        log.info("Abonent: {} change profile with id {}", AbonentIdGetter.getAbonentId(req).getValue(), profileDto.getId());
+        UUID id = UUID.fromString(sId);
+        profileDto.setId(id);
+
+        service.update(profileDto);
+        log.info("Abonent: {} update profile {}", AbonentIdGetter.getAbonentId(req).getValue(), profileDto.getId());
+        resp.sendRedirect(String.format("/profile?id=%s", id));
+    }
+
+    private void updateStatus(HttpServletRequest req, HttpServletResponse resp) throws IOException, ProfileNotFoundException, ValidException {
+        ProfileStatusDto profileDto = statusDtoMapper.mapTo(req);
+
+        log.info("Abonent: {} change status in profile with id {}", AbonentIdGetter.getAbonentId(req).getValue(), profileDto.id());
+        service.updateStatus(profileDto);
+        log.info("Abonent: {} update profile {}", AbonentIdGetter.getAbonentId(req).getValue(), profileDto.id());
+        resp.sendRedirect("/profile");
+    }
 
 
 }

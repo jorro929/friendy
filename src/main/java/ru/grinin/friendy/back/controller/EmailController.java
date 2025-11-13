@@ -8,10 +8,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import ru.grinin.friendy.back.dto.ProfileGetDto;
-import ru.grinin.friendy.back.dto.ProfilePutDto;
+import ru.grinin.friendy.back.dto.ProfileUpdateEmailDto;
 import ru.grinin.friendy.back.exception.EmailCollisionException;
 import ru.grinin.friendy.back.exception.ProfileNotFoundException;
-import ru.grinin.friendy.back.mapper.ProfileGetToPutMapper;
+import ru.grinin.friendy.back.exception.ValidException;
+import ru.grinin.friendy.back.mapper.RequestToProfileEmailDtoMapper;
 import ru.grinin.friendy.back.service.api.ProfileService;
 import ru.grinin.friendy.back.service.imp.StandardProfileService;
 
@@ -19,7 +20,6 @@ import ru.grinin.friendy.back.service.imp.StandardProfileService;
 import java.io.IOException;
 import java.util.*;
 
-import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
 
@@ -30,7 +30,7 @@ public class EmailController extends HttpServlet {
 
     private final ProfileService profileService = StandardProfileService.getINSTANCE();
 
-    private final ProfileGetToPutMapper mapper = ProfileGetToPutMapper.getINSTANCE();
+    private final RequestToProfileEmailDtoMapper emailMapper = RequestToProfileEmailDtoMapper.getINSTANCE();
 
 
     @Override
@@ -61,22 +61,21 @@ public class EmailController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Optional<ProfileGetDto> optional = profileService.findById(UUID.fromString(req.getParameter("id")));
-        if (optional.isPresent()) {
-            ProfilePutDto dto = mapper.mapTo(optional.get());
-            dto.setEmail(req.getParameter("email"));
-            dto.setId(UUID.fromString(req.getParameter("id")));
-            try {
-                profileService.update(dto);
-                log.info("Abonent: {} changed email in profile with id {}", getAbonentId(req).getValue(), dto.getId());
-                resp.sendRedirect(String.format("/profile?id=%s", dto.getId()));
-            } catch (EmailCollisionException e) {
-                resp.sendError(SC_BAD_REQUEST);
-            } catch (ProfileNotFoundException e) {
-                resp.sendError(SC_NOT_FOUND);
-            }
-        } else {
+        ProfileUpdateEmailDto dto = emailMapper.mapTo(req);
+        try {
+            profileService.updateEmail(dto);
+            log.info("Abonent: {} changed email in profile with id {}", getAbonentId(req).getValue(), dto.id());
+            resp.sendRedirect(String.format("/profile?id=%s", dto.id()));
+        } catch (EmailCollisionException e) {
+            req.getSession().setAttribute("errors", e.getMessage());
+            log.warn("Abonent {} selected an already busy email address", getAbonentId(req).getValue());
+            resp.sendRedirect("/profile?id=" + req.getParameter("id"));
+        } catch (ProfileNotFoundException e) {
             resp.sendError(SC_NOT_FOUND);
+        } catch (ValidException e) {
+            req.getSession().setAttribute("errors", e.getMessage());
+            log.warn("Abonent {} make not valid profile", getAbonentId(req).getValue());
+            resp.sendRedirect("/registration");
         }
     }
 }

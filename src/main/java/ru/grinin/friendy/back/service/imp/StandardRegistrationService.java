@@ -12,11 +12,13 @@ import ru.grinin.friendy.back.mapper.ProfileRegistrationMapper;
 import ru.grinin.friendy.back.model.Profile;
 import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 import ru.grinin.friendy.back.service.api.RegistrationService;
-import ru.grinin.friendy.back.validator.ValidatorResult;
+import ru.grinin.friendy.back.validator.ValidationResult;
 import ru.grinin.friendy.back.validator.profile.ProfileRegistrationValidator;
 
 import java.util.Set;
 import java.util.UUID;
+
+import static ru.grinin.friendy.back.util.Validation.validate;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -35,10 +37,8 @@ public class StandardRegistrationService implements RegistrationService {
     private final ProfileRegistrationValidator validator = ProfileRegistrationValidator.getINSTANCE();
     @Override
     public UUID save(ProfileRegistrationDto dto) throws EmailCollisionException, ValidException {
-        ValidatorResult result = validator.validate(dto);
-        if(!result.isValid()) {
-            throw new ValidException(result);
-        }
+        validate(validator, dto);
+
         Set<String> emails = dao.findAlLEmails();
         if(emails.contains(dto.getEmail())) throw  new EmailCollisionException(dto.getEmail());
 

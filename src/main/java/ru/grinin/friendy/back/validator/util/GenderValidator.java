@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.grinin.friendy.back.model.supportclass.Gender;
 import ru.grinin.friendy.back.validator.Validator;
-import ru.grinin.friendy.back.validator.ValidatorResult;
-import ru.grinin.friendy.back.validator.util.string.SimpleStringValidator;
+import ru.grinin.friendy.back.validator.ValidationResult;
 
 import java.util.Objects;
 
@@ -20,9 +19,9 @@ public class GenderValidator implements Validator<Gender> {
 
 
     @Override
-    public ValidatorResult validate(Gender gender) {
+    public ValidationResult validate(Gender gender) {
         log.trace("Start gender validator");
-        ValidatorResult result = new ValidatorResult();
+        ValidationResult result = new ValidationResult();
        if(Objects.isNull(gender)){
            result.addError(107, "Gender is not valid");
        }

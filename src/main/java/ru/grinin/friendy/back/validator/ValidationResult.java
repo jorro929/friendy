@@ -4,27 +4,27 @@ package ru.grinin.friendy.back.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidatorResult {
+public class ValidationResult {
 
-    private final List<ValidatorError> errors;
+    private final List<ValidationError> errors;
 
-    public ValidatorResult() {
+    public ValidationResult() {
         this.errors = new ArrayList<>();
     }
 
-    public void addError(ValidatorError error) {
+    public void addError(ValidationError error) {
         errors.add(error);
     }
 
     public void addError(int errorCode, String messageError) {
-        addError(new ValidatorError(errorCode, messageError));
+        addError(new ValidationError(errorCode, messageError));
     }
 
-    public void addError(ValidatorResult result) {
+    public void addError(ValidationResult result) {
         result.getErrors().forEach(this::addError);
     }
 
-    public List<ValidatorError> getErrors(){
+    public List<ValidationError> getErrors(){
         return List.copyOf(errors);
     }
 

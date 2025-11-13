@@ -6,28 +6,27 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.grinin.friendy.back.validator.Validator;
 import ru.grinin.friendy.back.validator.ValidationError;
 import ru.grinin.friendy.back.validator.ValidationResult;
+import ru.grinin.friendy.back.validator.Validator;
+
+import java.util.UUID;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class EmailValidator implements Validator<String> {
+public class IdValidator implements Validator<UUID> {
 
     @Getter
-    private static final EmailValidator INSTANCE = new EmailValidator();
-
+    private final static IdValidator INSTANCE = new IdValidator();
 
     @Override
-    public ValidationResult validate(String email){
+    public ValidationResult validate(UUID id) {
         ValidationResult result = new ValidationResult();
-        log.trace("Start email validation");
-        try {
-            new InternetAddress(email).validate();
-        } catch (AddressException e) {
-            result.addError(new ValidationError(101, "Email is not valid"));
+        log.trace("Start id validation");
+        if (id == null) {
+            result.addError(new ValidationError(109, "Id is not valid"));
         }
-        log.trace("End email validation");
+        log.trace("End id validation");
         return result;
     }
 }

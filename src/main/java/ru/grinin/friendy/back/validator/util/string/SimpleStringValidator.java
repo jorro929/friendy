@@ -1,11 +1,9 @@
 package ru.grinin.friendy.back.validator.util.string;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.grinin.friendy.back.validator.Validator;
-import ru.grinin.friendy.back.validator.ValidatorError;
-import ru.grinin.friendy.back.validator.ValidatorResult;
+import ru.grinin.friendy.back.validator.ValidationError;
+import ru.grinin.friendy.back.validator.ValidationResult;
 
 @Slf4j
 public class SimpleStringValidator implements Validator<String>{
@@ -25,11 +23,11 @@ public class SimpleStringValidator implements Validator<String>{
     }
 
     @Override
-    public ValidatorResult validate(String string){
-        ValidatorResult result = new ValidatorResult();
+    public ValidationResult validate(String string){
+        ValidationResult result = new ValidationResult();
         log.trace("Start " + name + " validation");
         if(string == null || string.isBlank()){
-            result.addError(new ValidatorError(code, name + " is not valid"));
+            result.addError(new ValidationError(code, name + " is not valid"));
         }
         log.trace("End " + name + " validation");
         return result;
