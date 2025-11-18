@@ -3,6 +3,7 @@ package ru.grinin.friendy.back.service.imp;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import ru.grinin.friendy.back.dao.imp.ProfileDao;
 import ru.grinin.friendy.back.dto.ProfileGetDto;
@@ -15,11 +16,13 @@ import ru.grinin.friendy.back.exception.ValidException;
 import ru.grinin.friendy.back.mapper.ProfileGetDtoMapper;
 import ru.grinin.friendy.back.mapper.ProfilePutDtoMapper;
 import ru.grinin.friendy.back.model.Profile;
+import ru.grinin.friendy.back.service.api.ContentService;
 import ru.grinin.friendy.back.service.api.ProfileService;
 import ru.grinin.friendy.back.validator.profile.ProfilePutValidator;
 import ru.grinin.friendy.back.validator.profile.ProfileUpdateEmailValidator;
 import ru.grinin.friendy.back.validator.profile.ProfileUpdateStatusValidator;
-import ru.grinin.friendy.back.validator.util.EmailValidator;
+import jakarta.servlet.http.Part;
+
 
 import java.util.*;
 
@@ -34,6 +37,8 @@ public class StandardProfileService implements ProfileService {
     private static final StandardProfileService INSTANCE = new StandardProfileService();
 
     private final ProfileDao dao = ProfileDao.getINSTANCE();
+
+    private final ContentService contentService = StandardContentService.getINSTANCE();
 
     private final ProfileGetDtoMapper getDtoMapper = ProfileGetDtoMapper.getINSTANCE();
     private final ProfilePutDtoMapper putDtoMapper = ProfilePutDtoMapper.getINSTANCE();
@@ -51,22 +56,30 @@ public class StandardProfileService implements ProfileService {
     }
 
     @Override
-    public boolean delete(UUID id) {
-        if (id == null) return false;
-        log.debug("id is not null");
+    public boolean delete(UUID id) throws ProfileNotFoundException{
+        if(!dao.delete(id)) throw new ProfileNotFoundException();
         return dao.delete(id);
     }
 
     @Override
+    @SneakyThrows
     public void update(ProfilePutDto dto) throws ProfileNotFoundException, ValidException {
         validate(putValidator, dto);
 
         Profile profile = getProfile(dto.getId());
+        if(dto.getPhoto() != null){
+            log.debug("Changed other photo");
+            Part photo = dto.getPhoto();
+            contentService.upload("\\profiles\\" + photo.getSubmittedFileName(),
+                    photo.getInputStream());
+            profile.setPhoto(photo.getSubmittedFileName());
+        }
         Profile newProfile = putDtoMapper.mapTo(dto);
         profile.setName(newProfile.getName());
         profile.setSurname(newProfile.getSurname());
         profile.setBirthDate(newProfile.getBirthDate());
         profile.setGender(newProfile.getGender());
+
 
         dao.update(dto.getId(), profile);
 

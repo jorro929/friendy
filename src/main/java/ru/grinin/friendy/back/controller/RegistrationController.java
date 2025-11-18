@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
+import static ru.grinin.friendy.back.util.StringUtils.isBlank;
 
 @WebServlet("/registration")
 @Slf4j
@@ -37,7 +38,7 @@ public class RegistrationController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 
-        if (req.getSession().getAttribute("profile") != null) {
+        if (req.getSession().getAttribute("profile") != null && !isBlank(req.getParameter("email"))) {
             log.info("Abonent {} with email: {}, started filling out the questionnaire", getAbonentId(req).getValue(), req.getParameter("email"));
             ProfileRegistrationDto dto = (ProfileRegistrationDto) req.getSession().getAttribute("profile");
             dto.setEmail(req.getParameter("email") );

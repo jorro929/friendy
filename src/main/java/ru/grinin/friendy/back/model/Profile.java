@@ -5,6 +5,7 @@ import ru.grinin.friendy.back.model.supportclass.Gender;
 import ru.grinin.friendy.back.model.supportclass.Identifiable;
 import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -41,5 +42,7 @@ public class Profile implements Identifiable<UUID> {
 
     @NonNull
     private ProfileStatus status;
+
+    private String photo;
 
 }

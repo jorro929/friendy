@@ -8,7 +8,7 @@
 <body>
 <%@ include file="header.jsp" %>
 <div>
-    <form method="post" action="/email">
+    <form method="post" action="/email?id=${profile.id}" enctype="multipart/form-data">
         <input type="hidden" name="_method" value="put"/>
         <input type="hidden" name="id" value="${requestScope.profile.id}">
         <input type="hidden" name="profile" value="${requestScope.profile}">

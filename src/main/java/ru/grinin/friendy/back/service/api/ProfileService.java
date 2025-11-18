@@ -16,7 +16,7 @@ public interface ProfileService {
 
     Optional<ProfileGetDto> findById(UUID id);
 
-    boolean delete(UUID id);
+    boolean delete(UUID id)throws ProfileNotFoundException;
 
     void update(ProfilePutDto dto) throws ProfileNotFoundException, ValidException;
 

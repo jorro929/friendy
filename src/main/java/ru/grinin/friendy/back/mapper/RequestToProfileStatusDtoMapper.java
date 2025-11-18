@@ -9,6 +9,8 @@ import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
 
 import java.util.UUID;
 
+import static ru.grinin.friendy.back.util.StringUtils.isBlank;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RequestToProfileStatusDtoMapper implements Mapper <HttpServletRequest, ProfileStatusDto> {
 
@@ -17,7 +19,8 @@ public class RequestToProfileStatusDtoMapper implements Mapper <HttpServletReque
 
     @Override
     public ProfileStatusDto mapTo(HttpServletRequest req) {
+        ProfileStatus status = isBlank(req.getParameter("status")) ? null : ProfileStatus.valueOf(req.getParameter("status"));
         return new ProfileStatusDto(UUID.fromString(req.getParameter("id")),
-                ProfileStatus.valueOf(req.getParameter("status")));
+                status);
     }
 }

@@ -2,6 +2,7 @@ package ru.grinin.friendy.back.controller;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
 
 @WebServlet("/email")
 @Slf4j
+@MultipartConfig
 public class EmailController extends HttpServlet {
 
 

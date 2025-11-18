@@ -25,6 +25,7 @@ public class ProfileGetDtoMapper implements Mapper <Profile, ProfileGetDto> {
                 Math.toIntExact(ChronoUnit.YEARS.between(profile.getBirthDate(), LocalDate.now())),
                 profile.getAbout(),
                 profile.getGender(),
-                profile.getStatus());
+                profile.getStatus(),
+                profile.getPhoto());
     }
 }

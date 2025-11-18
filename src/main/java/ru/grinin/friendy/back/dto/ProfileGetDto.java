@@ -31,4 +31,6 @@ public class ProfileGetDto {
     private Gender gender;
     @NonNull
     private ProfileStatus status;
+
+    private String photo;
 }

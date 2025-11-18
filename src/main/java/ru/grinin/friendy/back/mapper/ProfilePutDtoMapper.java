@@ -26,6 +26,7 @@ public class ProfilePutDtoMapper implements Mapper <ProfilePutDto, Profile> {
                 dto.getGender(),
                 ProfileStatus.ACTIVE);
          if(dto.getId() != null) profile.setId(dto.getId());
+         if(dto.getPhoto() != null) profile.setPhoto(dto.getPhoto().getSubmittedFileName());
          return profile;
     }
 }

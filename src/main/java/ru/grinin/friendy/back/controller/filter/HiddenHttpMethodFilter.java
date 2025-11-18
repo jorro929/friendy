@@ -42,6 +42,7 @@ public class HiddenHttpMethodFilter implements Filter {
             String paramValue = request.getParameter(METHOD_PARAM);
 
             if ("POST".equals(request.getMethod()) && !isBlank(paramValue)) {
+                log.debug(paramValue);
                 String method = paramValue.toUpperCase(Locale.ENGLISH);
                 request = new HttpMethodRequestWrapper(request, method);
             }

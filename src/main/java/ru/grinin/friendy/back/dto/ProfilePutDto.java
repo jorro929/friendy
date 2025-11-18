@@ -1,5 +1,6 @@
 package ru.grinin.friendy.back.dto;
 
+import jakarta.servlet.http.Part;
 import lombok.*;
 import ru.grinin.friendy.back.model.supportclass.Gender;
 import ru.grinin.friendy.back.model.supportclass.ProfileStatus;
@@ -33,6 +34,8 @@ public class ProfilePutDto {
 
     @NonNull
     private Gender gender;
+
+    private Part photo;
 
 
 }
