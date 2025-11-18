@@ -9,11 +9,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import ru.grinin.friendy.back.dto.ProfileGetDto;
-import ru.grinin.friendy.back.dto.ProfileUpdateEmailDto;
+import ru.grinin.friendy.back.dto.ProfileUpdateCredentialsDto;
 import ru.grinin.friendy.back.exception.EmailCollisionException;
 import ru.grinin.friendy.back.exception.ProfileNotFoundException;
 import ru.grinin.friendy.back.exception.ValidException;
-import ru.grinin.friendy.back.mapper.RequestToProfileEmailDtoMapper;
+import ru.grinin.friendy.back.mapper.RequestToProfileCredentialsDtoMapper;
 import ru.grinin.friendy.back.service.api.ProfileService;
 import ru.grinin.friendy.back.service.imp.StandardProfileService;
 
@@ -21,18 +21,19 @@ import ru.grinin.friendy.back.service.imp.StandardProfileService;
 import java.io.IOException;
 import java.util.*;
 
+import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static ru.grinin.friendy.back.util.AbonentIdGetter.getAbonentId;
 
-@WebServlet("/email")
+@WebServlet("/credentials")
 @Slf4j
 @MultipartConfig
-public class EmailController extends HttpServlet {
+public class CredentialsController extends HttpServlet {
 
 
     private final ProfileService profileService = StandardProfileService.getINSTANCE();
 
-    private final RequestToProfileEmailDtoMapper emailMapper = RequestToProfileEmailDtoMapper.getINSTANCE();
+    private final RequestToProfileCredentialsDtoMapper credentialsMapper = RequestToProfileCredentialsDtoMapper.getINSTANCE();
 
 
     @Override
@@ -50,7 +51,7 @@ public class EmailController extends HttpServlet {
             Optional<ProfileGetDto> optProfileDto = profileService.findById(UUID.fromString(sId));
             if (optProfileDto.isPresent()) {
                 req.setAttribute("profile", optProfileDto.get());
-                forwardUri = "/WEB-INF/jsp/email.jsp";
+                forwardUri = "/WEB-INF/jsp/credentials.jsp";
             }
         }
         if (forwardUri == null) {
@@ -62,10 +63,18 @@ public class EmailController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getSession().setAttribute("errors", null);
 
-        ProfileUpdateEmailDto dto = emailMapper.mapTo(req);
+        if (!req.getParameter("password").equals(req.getParameter("password_again"))) {
+            log.warn("Abonent: {} write different password", getAbonentId(req).getValue());
+            req.getSession().setAttribute("errors", "Password didn't match!");
+            resp.sendRedirect("/profile?id=" + req.getParameter("id"));
+            return;
+        }
+
+        ProfileUpdateCredentialsDto dto = credentialsMapper.mapTo(req);
         try {
-            profileService.updateEmail(dto);
+            profileService.updateCredentials(dto);
             log.info("Abonent: {} changed email in profile with id {}", getAbonentId(req).getValue(), dto.id());
             resp.sendRedirect(String.format("/profile?id=%s", dto.id()));
         } catch (EmailCollisionException e) {

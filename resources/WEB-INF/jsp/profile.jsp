@@ -22,7 +22,7 @@
                 <td><h3>Email</h3></td>
                 <td>
                     <input type="email" name="email" hidden value="${profile.email}">
-                    <a href="/email?id=${profile.id}">${profile.email}</a>
+                    <a href="/credentials?id=${profile.id}">${profile.email}</a>
                 </td>
             </tr>
 

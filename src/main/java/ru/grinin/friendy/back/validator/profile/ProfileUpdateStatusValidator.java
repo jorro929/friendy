@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.grinin.friendy.back.dto.ProfileStatusDto;
-import ru.grinin.friendy.back.dto.ProfileUpdateEmailDto;
 import ru.grinin.friendy.back.validator.ValidationResult;
 import ru.grinin.friendy.back.validator.Validator;
-import ru.grinin.friendy.back.validator.util.EmailValidator;
 import ru.grinin.friendy.back.validator.util.IdValidator;
 import ru.grinin.friendy.back.validator.util.StatusValidator;
 

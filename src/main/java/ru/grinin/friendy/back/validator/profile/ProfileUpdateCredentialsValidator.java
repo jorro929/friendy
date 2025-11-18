@@ -4,24 +4,27 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.grinin.friendy.back.dto.ProfileUpdateEmailDto;
+import ru.grinin.friendy.back.dto.ProfileUpdateCredentialsDto;
 import ru.grinin.friendy.back.validator.ValidationResult;
 import ru.grinin.friendy.back.validator.Validator;
 import ru.grinin.friendy.back.validator.util.EmailValidator;
 import ru.grinin.friendy.back.validator.util.IdValidator;
+import ru.grinin.friendy.back.validator.util.string.PasswordValidator;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ProfileUpdateEmailValidator implements Validator<ProfileUpdateEmailDto> {
+public class ProfileUpdateCredentialsValidator implements Validator<ProfileUpdateCredentialsDto> {
 
     @Getter
-    private static final ProfileUpdateEmailValidator INSTANCE = new ProfileUpdateEmailValidator();
+    private static final ProfileUpdateCredentialsValidator INSTANCE = new ProfileUpdateCredentialsValidator();
 
     private final EmailValidator emailValidator = EmailValidator.getINSTANCE();
+
+    private final PasswordValidator passwordValidator = new PasswordValidator();
     private final IdValidator idValidator = IdValidator.getINSTANCE();
 
     @Override
-    public ValidationResult validate(ProfileUpdateEmailDto dto) {
+    public ValidationResult validate(ProfileUpdateCredentialsDto dto) {
         ValidationResult result = new ValidationResult();
         log.trace("Start profile validation");
         if (dto == null) {
@@ -29,6 +32,7 @@ public class ProfileUpdateEmailValidator implements Validator<ProfileUpdateEmail
         } else {
             result.addError(idValidator.validate(dto.id()));
             result.addError(emailValidator.validate(dto.email()));
+            result.addError(passwordValidator.validate(dto.password()));
 
         }
         log.trace("End profile validation");

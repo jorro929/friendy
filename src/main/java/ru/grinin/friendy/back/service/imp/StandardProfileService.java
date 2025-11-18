@@ -9,7 +9,7 @@ import ru.grinin.friendy.back.dao.imp.ProfileDao;
 import ru.grinin.friendy.back.dto.ProfileGetDto;
 import ru.grinin.friendy.back.dto.ProfilePutDto;
 import ru.grinin.friendy.back.dto.ProfileStatusDto;
-import ru.grinin.friendy.back.dto.ProfileUpdateEmailDto;
+import ru.grinin.friendy.back.dto.ProfileUpdateCredentialsDto;
 import ru.grinin.friendy.back.exception.EmailCollisionException;
 import ru.grinin.friendy.back.exception.ProfileNotFoundException;
 import ru.grinin.friendy.back.exception.ValidException;
@@ -19,7 +19,7 @@ import ru.grinin.friendy.back.model.Profile;
 import ru.grinin.friendy.back.service.api.ContentService;
 import ru.grinin.friendy.back.service.api.ProfileService;
 import ru.grinin.friendy.back.validator.profile.ProfilePutValidator;
-import ru.grinin.friendy.back.validator.profile.ProfileUpdateEmailValidator;
+import ru.grinin.friendy.back.validator.profile.ProfileUpdateCredentialsValidator;
 import ru.grinin.friendy.back.validator.profile.ProfileUpdateStatusValidator;
 import jakarta.servlet.http.Part;
 
@@ -45,7 +45,7 @@ public class StandardProfileService implements ProfileService {
 
     private final ProfilePutValidator putValidator = ProfilePutValidator.getINSTANCE();
     private final ProfileUpdateStatusValidator statusValidator = ProfileUpdateStatusValidator.getINSTANCE();
-    private final ProfileUpdateEmailValidator emailValidator = ProfileUpdateEmailValidator.getINSTANCE();
+    private final ProfileUpdateCredentialsValidator emailValidator = ProfileUpdateCredentialsValidator.getINSTANCE();
 
 
     @Override
@@ -94,13 +94,14 @@ public class StandardProfileService implements ProfileService {
     }
 
     @Override
-    public void updateEmail(ProfileUpdateEmailDto dto) throws ProfileNotFoundException, EmailCollisionException, ValidException {
+    public void updateCredentials(ProfileUpdateCredentialsDto dto) throws ProfileNotFoundException, EmailCollisionException, ValidException {
         validate(emailValidator, dto);
 
         Profile profile = getProfile(dto.id());
         checkProfile(profile.getEmail(), dto.email());
         log.debug("{} is not busy", dto.email());
         profile.setEmail(dto.email());
+        profile.setPassword(dto.password());
         dao.update(profile.getId(), profile);
 
     }

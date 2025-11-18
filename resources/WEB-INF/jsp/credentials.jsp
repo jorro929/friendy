@@ -8,7 +8,7 @@
 <body>
 <%@ include file="header.jsp" %>
 <div>
-    <form method="post" action="/email?id=${profile.id}" enctype="multipart/form-data">
+    <form method="post" action="/credentials?id=${profile.id}" enctype="multipart/form-data">
         <input type="hidden" name="_method" value="put"/>
         <input type="hidden" name="id" value="${requestScope.profile.id}">
         <input type="hidden" name="profile" value="${requestScope.profile}">
@@ -16,6 +16,14 @@
             <tr>
                 <td><h3>${requestScope.wordBundle.getWord("email")}</h3></td>
                 <td><input type="email" name="email" value="${requestScope.profile.email}"></td>
+            </tr>
+            <tr>
+                <td><h3>${requestScope.wordBundle.getWord("password")}</h3></td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            <tr>
+                <td><h3>${requestScope.wordBundle.getWord("password.again")}</h3></td>
+                <td><input type="password" name="password_again"></td>
             </tr>
         </table>
         <button type="submit">${requestScope.wordBundle.getWord("save")}</button>
